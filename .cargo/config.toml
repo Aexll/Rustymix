@@ -1,0 +1,4 @@
+# Exécutable Windows autonome : le runtime C (vcruntime) est lié statiquement,
+# Rustymix démarre sans « Visual C++ Redistributable » installé.
+[target.x86_64-pc-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static"]

@@ -1,6 +1,6 @@
 [package]
 name = "rustymix"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
 description = "Application de mix DJ : deux platines, EQ, filtre, stems, transitions automatiques en nœuds"
 repository = "https://github.com/Aexll/Rustymix"
@@ -27,6 +27,25 @@ walkdir = "2.5.0"
 
 # Le DSP et le décodage doivent rester rapides même avec `cargo run` :
 # les dépendances sont toujours optimisées, le code de l'application un peu.
+# Paquet Ubuntu / Debian (`cargo deb`, voir .github/workflows/release.yml).
+[package.metadata.deb]
+maintainer = "Aexll <https://github.com/Aexll/Rustymix>"
+copyright = "Aexll"
+license-file = ["LICENSE", "0"]
+extended-description = """Application de mix DJ : deux platines avec formes d'onde, marqueurs, SYNC, MATCH, EQ 3 bandes, filtre et boucles ; stems (Demucs) ; transitions automatiques dans un éditeur de nœuds ; suggestions et recommandations de morceaux."""
+section = "sound"
+priority = "optional"
+depends = "$auto"
+suggests = "ffmpeg, yt-dlp, python3-pip"
+assets = [
+    ["target/release/rustymix", "usr/bin/", "755"],
+    ["packaging/linux/rustymix.desktop", "usr/share/applications/", "644"],
+    ["assets/icons/logo-256.png", "usr/share/icons/hicolor/256x256/apps/rustymix.png", "644"],
+    ["assets/icons/logo-128.png", "usr/share/icons/hicolor/128x128/apps/rustymix.png", "644"],
+    ["assets/icons/logo-64.png", "usr/share/icons/hicolor/64x64/apps/rustymix.png", "644"],
+    ["README.md", "usr/share/doc/rustymix/README.md", "644"],
+]
+
 # Icône de l'exécutable Windows.
 [target.'cfg(windows)'.build-dependencies]
 winresource = "0.1"

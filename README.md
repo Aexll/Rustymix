@@ -19,17 +19,31 @@
 
 ## Télécharger
 
-Les versions compilées pour Windows et Ubuntu sont sur la page
-[Releases](https://github.com/Aexll/Rustymix/releases) :
+Les versions compilées sont sur la page
+[Releases](https://github.com/Aexll/Rustymix/releases).
 
-- **Windows** : `rustymix-windows-x64.zip`, à décompresser, puis lancer `rustymix.exe`.
-- **Ubuntu** (22.04 ou plus récent) : `rustymix-linux-x64.tar.gz`, à décompresser, puis lancer
-  `./rustymix`. `./install.sh` l'ajoute au menu des applications (dans `~/.local`).
+**Windows** : `rustymix-setup-x64.exe`, l'installateur. Il installe Rustymix pour
+l'utilisateur courant (sans droits administrateur ; « pour tous les utilisateurs » est
+proposé), ajoute un raccourci au menu Démarrer (et au bureau si on le coche), et apparaît
+dans « Programmes et fonctionnalités » pour la désinstallation. Une case facultative installe
+aussi `yt-dlp` et FFmpeg avec winget, pour l'installation de sons. Les réglages, la
+bibliothèque et les transitions sont conservés à la désinstallation. Sans installation :
+`rustymix-windows-x64.zip`, à décompresser, puis lancer `rustymix.exe`.
+
+**Ubuntu** (22.04 ou plus récent) : le paquet `.deb`, qui ajoute Rustymix au menu des
+applications :
+
+```bash
+sudo apt install ./rustymix_0.2.0_amd64.deb
+```
+
+Sans installation : `rustymix-linux-x64.tar.gz`, à décompresser, puis lancer `./rustymix`
+(`./install.sh` l'ajoute au menu des applications, dans `~/.local`).
 
 Fonctions facultatives, qui demandent des outils externes :
 
 - installer des sons : [`yt-dlp`](https://github.com/yt-dlp/yt-dlp) et `ffmpeg` dans le
-  PATH (et `spotdl` pour Spotify) ;
+  PATH (et `spotdl` pour Spotify) ; sous Ubuntu : `sudo apt install ffmpeg yt-dlp` ;
 - séparer les stems : Python 3 avec PyTorch et Demucs (voir plus bas).
 
 ## Compiler et lancer
@@ -324,9 +338,12 @@ src/
 ```
 
 À côté : `assets/` (logo : `logo.svg` source, icônes PNG et `.ico`), `build.rs` (icône de
-l'exécutable Windows), `packaging/linux/` (raccourci `.desktop` et `install.sh`) et
-`.github/workflows/release.yml` (compilation Windows / Ubuntu et publication des versions
-pour chaque étiquette `v*`).
+l'exécutable Windows), `.cargo/config.toml` (runtime C lié statiquement : l'exécutable
+Windows ne dépend d'aucun « Visual C++ Redistributable »), `packaging/windows/`
+(installateur Inno Setup : `iscc /DAppVersion=0.2.0 packaging/windows/rustymix.iss`, après
+`cargo build --release`), `packaging/linux/` (raccourci `.desktop` et `install.sh` ; le
+`.deb` est décrit dans `Cargo.toml` pour `cargo deb`) et `.github/workflows/release.yml`
+(compilation, tests et paquets Windows / Ubuntu, publiés pour chaque étiquette `v*`).
 
 Chaîne de signal par platine : buffer (mix, ou stems pondérés : mix × instruments +
 Σ stem × (volume − instruments) ; boucle éventuelle) → tempo / key lock / transposition →

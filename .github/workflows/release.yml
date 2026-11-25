@@ -1,5 +1,7 @@
-# Compile et teste Rustymix sous Windows et Ubuntu ; pour une étiquette
-# « v* » (v0.1.0…), publie aussi une version avec les deux paquets.
+# Compile et teste Rustymix sous Windows et Ubuntu, puis fabrique :
+# * Windows : l'installateur (Inno Setup) et une archive portable ;
+# * Ubuntu : un paquet .deb et une archive portable.
+# Pour une étiquette « v* » (v0.2.0…), publie une version avec ces fichiers.
 name: Release
 
 on:
@@ -41,15 +43,31 @@ jobs:
       - name: Compilation
         run: cargo build --release
 
-      - name: Paquet Windows
+      - name: Version
+        id: version
+        shell: bash
+        run: echo "version=$(grep -m1 '^version' Cargo.toml | cut -d'"' -f2)" >> "$GITHUB_OUTPUT"
+
+      - name: Paquets Windows (installateur et archive portable)
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
+          $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          if (-not (Test-Path $iscc)) { choco install innosetup -y --no-progress; }
+          & $iscc /Q "/DAppVersion=${{ steps.version.outputs.version }}" packaging/windows/rustymix.iss
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Move-Item dist/rustymix-setup-x64.exe rustymix-setup-x64.exe
           New-Item -ItemType Directory -Force dist/rustymix | Out-Null
           Copy-Item target/release/rustymix.exe, README.md, LICENSE dist/rustymix/
           Compress-Archive -Path dist/rustymix -DestinationPath rustymix-windows-x64.zip
 
-      - name: Paquet Ubuntu
+      - name: Paquet Ubuntu (.deb)
+        if: runner.os == 'Linux'
+        run: |
+          cargo install cargo-deb --locked
+          cargo deb --no-build --output rustymix_${{ steps.version.outputs.version }}_amd64.deb
+
+      - name: Archive portable Ubuntu
         if: runner.os == 'Linux'
         run: |
           mkdir -p dist/rustymix
@@ -61,7 +79,9 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.name }}
-          path: rustymix-*.*
+          path: |
+            rustymix-*.*
+            rustymix_*.deb
           if-no-files-found: error
 
   release:
