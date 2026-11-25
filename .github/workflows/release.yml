@@ -1,0 +1,79 @@
+# Compile et teste Rustymix sous Windows et Ubuntu ; pour une étiquette
+# « v* » (v0.1.0…), publie aussi une version avec les deux paquets.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            name: windows-x64
+          # La plus ancienne Ubuntu encore disponible : le binaire marche
+          # aussi sur les versions plus récentes (glibc).
+          - os: ubuntu-22.04
+            name: linux-x64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Dépendances Ubuntu
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential pkg-config libasound2-dev libxkbcommon-dev libwayland-dev libgl1-mesa-dev
+
+      - name: Tests
+        run: cargo test --release
+
+      - name: Compilation
+        run: cargo build --release
+
+      - name: Paquet Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force dist/rustymix | Out-Null
+          Copy-Item target/release/rustymix.exe, README.md, LICENSE dist/rustymix/
+          Compress-Archive -Path dist/rustymix -DestinationPath rustymix-windows-x64.zip
+
+      - name: Paquet Ubuntu
+        if: runner.os == 'Linux'
+        run: |
+          mkdir -p dist/rustymix
+          cp target/release/rustymix README.md LICENSE packaging/linux/install.sh packaging/linux/rustymix.desktop dist/rustymix/
+          cp assets/icons/logo-256.png dist/rustymix/rustymix.png
+          chmod +x dist/rustymix/rustymix dist/rustymix/install.sh
+          tar -czf rustymix-linux-x64.tar.gz -C dist rustymix
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.name }}
+          path: rustymix-*.*
+          if-no-files-found: error
+
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true

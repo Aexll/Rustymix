@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <title>Rustymix</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#232833"/>
+      <stop offset="1" stop-color="#0f1115"/>
+    </linearGradient>
+    <linearGradient id="shell" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff7a3d"/>
+      <stop offset="1" stop-color="#d9481a"/>
+    </linearGradient>
+    <radialGradient id="vinyl" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0.0" stop-color="#1a1d24"/>
+      <stop offset="1.0" stop-color="#07080a"/>
+    </radialGradient>
+    <!-- Pince : un disque entaillé en V vers le haut (mâchoires ouvertes) -->
+    <mask id="claw-left">
+      <rect width="512" height="512" fill="#fff"/>
+      <path d="M 148 376 L 118 326 L 160 330 Z" fill="#000"/>
+    </mask>
+    <mask id="claw-right">
+      <rect width="512" height="512" fill="#fff"/>
+      <path d="M 364 376 L 394 326 L 352 330 Z" fill="#000"/>
+    </mask>
+    <clipPath id="round">
+      <rect width="512" height="512" rx="112"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#round)">
+    <rect width="512" height="512" fill="url(#bg)"/>
+
+    <!-- Ondes sonores derrière le crabe -->
+    <g fill="none" stroke-linecap="round" opacity="0.55">
+      <path d="M 70 150 Q 46 190 70 230" stroke="#38b6ff" stroke-width="9"/>
+      <path d="M 40 128 Q 6 190 40 252" stroke="#38b6ff" stroke-width="9" opacity="0.6"/>
+      <path d="M 442 150 Q 466 190 442 230" stroke="#ff9a3c" stroke-width="9"/>
+      <path d="M 472 128 Q 506 190 472 252" stroke="#ff9a3c" stroke-width="9" opacity="0.6"/>
+    </g>
+
+    <!-- Platines -->
+    <g>
+      <circle cx="124" cy="404" r="100" fill="url(#vinyl)" stroke="#2c313b" stroke-width="4"/>
+      <circle cx="124" cy="404" r="80" fill="none" stroke="#252a33" stroke-width="2"/>
+      <circle cx="124" cy="404" r="64" fill="none" stroke="#252a33" stroke-width="2"/>
+      <circle cx="124" cy="404" r="48" fill="none" stroke="#252a33" stroke-width="2"/>
+      <circle cx="124" cy="404" r="30" fill="#38b6ff"/>
+      <circle cx="124" cy="404" r="6" fill="#07080a"/>
+
+      <circle cx="388" cy="404" r="100" fill="url(#vinyl)" stroke="#2c313b" stroke-width="4"/>
+      <circle cx="388" cy="404" r="80" fill="none" stroke="#252a33" stroke-width="2"/>
+      <circle cx="388" cy="404" r="64" fill="none" stroke="#252a33" stroke-width="2"/>
+      <circle cx="388" cy="404" r="48" fill="none" stroke="#252a33" stroke-width="2"/>
+      <circle cx="388" cy="404" r="30" fill="#ff9a3c"/>
+      <circle cx="388" cy="404" r="6" fill="#07080a"/>
+    </g>
+
+    <!-- Pattes -->
+    <g stroke="#c13f16" stroke-width="15" stroke-linecap="round" fill="none">
+      <path d="M 136 250 L 96 266 L 78 300"/>
+      <path d="M 140 276 L 106 300 L 96 330"/>
+      <path d="M 376 250 L 416 266 L 434 300"/>
+      <path d="M 372 276 L 406 300 L 416 330"/>
+    </g>
+
+    <!-- Bras -->
+    <g stroke="#e85a26" stroke-width="24" stroke-linecap="round" fill="none">
+      <path d="M 176 292 Q 158 316 152 346"/>
+      <path d="M 336 292 Q 354 316 360 346"/>
+    </g>
+
+    <!-- Casque : arceau, derrière les yeux -->
+    <path d="M 116 222 C 106 6 406 6 396 222" fill="none" stroke="#2b303a" stroke-width="18" stroke-linecap="round"/>
+    <path d="M 128 200 C 122 30 390 30 384 200" fill="none" stroke="#454c59" stroke-width="5" stroke-linecap="round"/>
+
+    <!-- Corps : carapace à piquants -->
+    <path d="M 118 238
+             C 118 196 150 166 186 160
+             L 196 140 L 212 158
+             L 234 138 L 250 156
+             L 272 136 L 288 156
+             L 310 140 L 322 160
+             C 362 166 394 196 394 238
+             C 394 292 330 324 256 324
+             C 182 324 118 292 118 238 Z"
+          fill="url(#shell)"/>
+    <ellipse cx="256" cy="300" rx="104" ry="20" fill="#c13f16" opacity="0.45"/>
+
+    <!-- Yeux -->
+    <g stroke="#e85a26" stroke-width="12" stroke-linecap="round">
+      <line x1="222" y1="170" x2="212" y2="118"/>
+      <line x1="290" y1="170" x2="300" y2="118"/>
+    </g>
+    <circle cx="210" cy="108" r="24" fill="#ffffff"/>
+    <circle cx="302" cy="108" r="24" fill="#ffffff"/>
+    <circle cx="216" cy="113" r="11" fill="#14161b"/>
+    <circle cx="296" cy="113" r="11" fill="#14161b"/>
+    <circle cx="220" cy="108" r="3.5" fill="#ffffff"/>
+    <circle cx="300" cy="108" r="3.5" fill="#ffffff"/>
+
+    <!-- Sourire -->
+    <path d="M 224 262 Q 256 292 288 262" fill="none" stroke="#5c1906" stroke-width="8" stroke-linecap="round"/>
+
+    <!-- Casque : écouteurs -->
+    <rect x="94" y="186" width="44" height="82" rx="18" fill="#2b303a"/>
+    <rect x="88" y="198" width="14" height="58" rx="7" fill="#38b6ff"/>
+    <rect x="374" y="186" width="44" height="82" rx="18" fill="#2b303a"/>
+    <rect x="410" y="198" width="14" height="58" rx="7" fill="#ff9a3c"/>
+
+    <!-- Pinces sur les disques -->
+    <g>
+      <circle cx="144" cy="366" r="36" fill="url(#shell)" mask="url(#claw-left)"/>
+      <circle cx="368" cy="366" r="36" fill="url(#shell)" mask="url(#claw-right)"/>
+    </g>
+
+    <!-- Traits de scratch -->
+    <g fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" opacity="0.7">
+      <path d="M 74 352 Q 60 372 62 396"/>
+      <path d="M 438 352 Q 452 372 450 396"/>
+    </g>
+  </g>
+</svg>

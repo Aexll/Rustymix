@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Rustymix
+GenericName=DJ Mixer
+Comment=Mix DJ : deux platines, EQ, filtre, stems, transitions automatiques
+Exec=rustymix
+Icon=rustymix
+Terminal=false
+Categories=AudioVideo;Audio;Mixer;
+StartupWMClass=rustymix
